@@ -21,17 +21,35 @@ fn draw_pxls(x: u32, y: u32, pieces: &mut [Entity; 32]) {
 }
 
 pub fn draw(pieces: &mut [Entity; 32], white_plays: bool) {
-    let start_y = if white_plays { 0 } else { HEIGHT+1 };
-    let start_x = if white_plays { 1 } else { WIDTH+1 };
-    for y in 0..HEIGHT+1 {
+    let mut y: i32 = if white_plays { 0 } else { HEIGHT } as i32;
+    let end_y: i32 = if white_plays { HEIGHT } else { 0 } as i32;
+    let y_step: i32 = if white_plays { 1 } else { -1 };
+
+    loop {
         print!("{}. ", y);
-        for x in 1..WIDTH+1 {
-            if y==0 {
+
+        let mut x: i32 = if white_plays { 1 } else { WIDTH } as i32;
+        let end_x: i32 = if white_plays { WIDTH } else { 1 } as i32;
+        let x_step: i32 = if white_plays { 1 } else { -1 };
+
+        loop {
+            if y == 0 {
                 print!("{} ", x);
             } else {
-                draw_pxls(x, y, pieces);
+                draw_pxls(x as u32, y as u32, pieces);
             }
+
+            if x == end_x {
+                break;
+            }
+            x += x_step;
         }
+
         println!();
+
+        if y == end_y {
+            break;
+        }
+        y += y_step;
     }
 }

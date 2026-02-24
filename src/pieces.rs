@@ -66,13 +66,32 @@ fn move_pawn(i: usize, dx: u32, dy: u32, pieces: &mut [Entity; 32]) -> bool {
     let en: Entity = pieces[i];
     let delta_x = en.x.abs_diff(dx);
     let delta_y = en.y.abs_diff(dy);
+    let is_white: bool = is_white_piece(&pieces[i]);
+    let forward: bool = if is_white {
+        en.y > dy
+    } else {
+        en.y < dy
+    };
     if delta_x == 0 {
-        let is_white: bool = is_white_piece(&pieces[i]);
+        let mut overlaps_piece: bool = false;
+        for j in 0..pieces.len() {
+            if pieces[j].x == dx && pieces[j].y == dy {
+                overlaps_piece = true;
+            }
+        }
         let default_pos: u32 = if is_white { WHITE_PAWN_DEFAULT_Y } else { BLACK_PAWN_DEFAULT_Y };
         let max_delta: u32 = if default_pos == pieces[i].y { 2 } else { 1 };
-        return delta_y <= max_delta;
+        return delta_y <= max_delta && !overlaps_piece && forward;
     } else {
-        return delta_y == 1 && delta_x == 1;
+        let color: bool = is_white_piece(&pieces[i]);
+        let mut overlaps_enemy: bool = false;
+        for j in 0..pieces.len() {
+            let j_color: bool = is_white_piece(&pieces[j]);
+            if pieces[j].x == dx && pieces[j].y == dy && j_color != color {
+                overlaps_enemy = true;
+            }
+        }
+        return delta_y == 1 && delta_x == 1 && overlaps_enemy && forward;
     }
 }
 
