@@ -31,15 +31,6 @@ impl Entity {
         }
     }
 
-    pub fn from_mut(x: u32, y:u32, cha: char) -> Entity {
-        Entity{
-            x: x,
-            y: y,
-            c: cha,
-            a: true,
-        }
-    }
-
     pub fn print(&self) {
         println!("Ent:{}:[x:{}, y:{}]", self.c, self.x, self.y);
     }
