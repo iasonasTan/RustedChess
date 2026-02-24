@@ -3,7 +3,7 @@ cls
 cd src
 rustc main.rs
 
-move main ..\out
+move main.exe ..\out
 
 cd ..
-.\out\main
+.\out\main.exe
