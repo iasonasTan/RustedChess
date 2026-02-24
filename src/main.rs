@@ -26,34 +26,44 @@ fn main() {
         println!("Enter your move: ");
         let mut inp: String = String::new();
         let _  = io::stdin().read_line(&mut inp);
-        match inp.trim() {
+        let played: bool = match inp.trim() {
             "quit" => exit(0),
             _ => play(&inp, &mut piec),
-        }
+        };
         
-        white_plays = !white_plays;
+        if played {
+            white_plays = !white_plays;
+        }
         println!();
     }
 }
 
-fn play(code: &String, pieces: &mut [Entity; 32]) {
+fn play(code: &String, pieces: &mut [Entity; 32]) -> bool{
     let poss: Vec<&str> = code.split(',').collect();
-    let ox: u32 = to_u32(poss[0]);
-    let oy: u32 = to_u32(poss[1]);
-    let dx: u32 = to_u32(poss[2]);
-    let dy: u32 = to_u32(poss[3]);
-    let res: bool = move_piece(ox, oy, dx, dy, pieces);
+    let ox: i32 = to_i32(poss[0]);
+    let oy: i32 = to_i32(poss[1]);
+    let dx: i32 = to_i32(poss[2]);
+    let dy: i32 = to_i32(poss[3]);
+    if ox == -1 || oy == -1 || dx == -1 || dy == -1 {
+        println!("Unknown coordinates...");
+        return false;
+    }
+    let res: bool = move_piece(
+        ox as u32,
+        oy as u32,
+        dx as u32,
+        dy as u32,
+        pieces
+    );
     if !res {
         println!("You can't move there!");
     }
+    return res;
 }
 
-fn to_u32(s: &str) -> u32 {
-    match s.trim().parse::<u32>() {
+fn to_i32(s: &str) -> i32 {
+    match s.trim().parse::<i32>() {
         Ok(n) => n,
-        Err(_) => {
-            println!("This was not a number.");
-            exit(1);
-        },
+        Err(_) => -1,
     }
 }
