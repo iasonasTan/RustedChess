@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 set -e
+
 clear
 
 cd src/
 rustc main.rs
+
 mv main ../out/
-cd ../out/
-./main
 cd ..
+./out/main
