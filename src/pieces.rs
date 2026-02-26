@@ -51,8 +51,44 @@ fn move_knight(i: usize, dx: u32, dy: u32, pieces: &mut [Entity; 32]) -> bool {
     delta_x==2&&delta_y==1||delta_x==1&&delta_y==2
 }
 
-fn move_rook(i: usize, dx: u32, dy: u32, pieces: &mut [Entity; 32]) -> bool {
-    pieces[i].x==dx || pieces[i].y==dy
+fn move_rook(i: usize, udx: u32, udy: u32, pieces: &mut [Entity; 32]) -> bool {
+    let dx: i32 = udx as i32;
+    let dy: i32 = udy as i32;
+    let mut x: i32 = pieces[i].x as i32;
+    let mut y: i32 = pieces[i].y as i32;
+    if x == dx {    
+        let step = if y > dy { -1 } else { 1 };
+        y+=step;
+        // steps y
+        while y != dy {
+            if contains_piece_at(x, y, &pieces) {
+                println!("There's a blockig piece in {}, {}", x, y);
+                return false;
+            }
+            y += step;
+        }
+    } else if y == dy {
+        let step = if x > dx { -1 } else { 1 };
+        x+=step;
+        // steps x
+        while x <= dx {
+            if contains_piece_at(x, y, &pieces) {
+                println!("There's a blockig piece in {}, {}", x, y);
+                return false;
+            }
+            x += step;
+        }
+    }
+    true
+}
+
+fn contains_piece_at(x: i32, y: i32, pieces: &[Entity; 32]) -> bool {
+    for i in 0..pieces.len() {
+        if pieces[i].x as i32 == x && pieces[i].y as i32 == y {
+            return true;
+        }
+    }
+    false
 }
 
 fn move_bishop(i: usize, dx: u32, dy: u32, pieces: &mut [Entity; 32]) -> bool {
