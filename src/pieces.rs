@@ -19,7 +19,7 @@ fn is_white_piece(en: &Entity) -> bool {
     ['♔', '♕', '♖', '♗', '♘', '♙'].contains(&en.c)
 }
 
-fn move_kill(i: usize, dx: u32, dy: u32, pieces: &mut [Entity; 32]) {
+fn move_kill(i: usize, dx: u32, dy: u32, pieces: &mut [Entity; 32]) -> bool {
     let color: bool = is_white_piece(&pieces[i]);
     let mut mv: bool = true;
     for j in 0..pieces.len() {
@@ -37,6 +37,7 @@ fn move_kill(i: usize, dx: u32, dy: u32, pieces: &mut [Entity; 32]) {
         pieces[i].x = dx;
         pieces[i].y = dy;
     }
+    mv
 }
 
 fn move_king(i: usize, dx: u32, dy: u32, pieces: &mut [Entity; 32]) -> bool {
@@ -160,7 +161,7 @@ pub fn move_piece(ox: u32, oy: u32, dx: u32, dy: u32, pieces: &mut [Entity; 32])
                 _ => false,
             };
             if mv {
-                move_kill(i, dx, dy, pieces);
+                return move_kill(i, dx, dy, pieces);
             }
             return mv;
         }
