@@ -91,11 +91,27 @@ fn contains_piece_at(x: i32, y: i32, pieces: &[Entity; 32]) -> bool {
     false
 }
 
-fn move_bishop(i: usize, dx: u32, dy: u32, pieces: &mut [Entity; 32]) -> bool {
+fn move_bishop(i: usize, udx: u32,  udy: u32, pieces: &mut [Entity; 32]) -> bool {
     let en: Entity = pieces[i];
-    let delta_x = en.x.abs_diff(dx);
-    let delta_y = en.y.abs_diff(dy);
-    delta_x == delta_y
+    let dx: i32 = udx as i32;
+    let dy: i32 = udy as i32;
+    let mut x: i32 = en.x as i32;
+    let mut y: i32 = en.y as i32;
+    let step_x: i32 = if x > dx { -1 } else { 1 };
+    let step_y: i32 = if y > dy { -1 } else { 1 };
+    y+=step_y;
+    x+=step_x;
+    while y != dy && x != dx {
+        if contains_piece_at(x, y, &pieces) {
+            println!("There's a blockig piece in {}, {}", x, y);
+            return false;
+        }
+        y+=step_y;
+        x+=step_x;
+    }
+    let delta_x = en.x.abs_diff(udx);
+    let delta_y = en.y.abs_diff(udy);
+    delta_x==delta_y
 }
 
 fn move_pawn(i: usize, dx: u32, dy: u32, pieces: &mut [Entity; 32]) -> bool {
