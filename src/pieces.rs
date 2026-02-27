@@ -6,6 +6,15 @@ use utils::Entity;
 const WHITE_PAWN_DEFAULT_Y: u32 = 7;
 const BLACK_PAWN_DEFAULT_Y: u32 = 2;
 
+fn contains_piece_at(x: i32, y: i32, pieces: &[Entity; 32]) -> bool {
+    for i in 0..pieces.len() {
+        if pieces[i].x as i32 == x && pieces[i].y as i32 == y {
+            return true;
+        }
+    }
+    false
+}
+
 fn is_white_piece(en: &Entity) -> bool {
     ['♔', '♕', '♖', '♗', '♘', '♙'].contains(&en.c)
 }
@@ -38,10 +47,7 @@ fn move_king(i: usize, dx: u32, dy: u32, pieces: &mut [Entity; 32]) -> bool {
 }
 
 fn move_queen(i: usize, dx: u32, dy: u32, pieces: &mut [Entity; 32]) -> bool {
-    let en: Entity = pieces[i];
-    let delta_x = en.x.abs_diff(dx);
-    let delta_y = en.y.abs_diff(dy);
-    delta_x == delta_y && pieces[i].x==dx || pieces[i].y==dy
+    move_bishop(i, dx, dy, pieces) || move_rook(i, dx, dy, pieces)
 }
 
 fn move_knight(i: usize, dx: u32, dy: u32, pieces: &mut [Entity; 32]) -> bool {
@@ -52,10 +58,11 @@ fn move_knight(i: usize, dx: u32, dy: u32, pieces: &mut [Entity; 32]) -> bool {
 }
 
 fn move_rook(i: usize, udx: u32, udy: u32, pieces: &mut [Entity; 32]) -> bool {
+    let en: Entity = pieces[i];
     let dx: i32 = udx as i32;
     let dy: i32 = udy as i32;
-    let mut x: i32 = pieces[i].x as i32;
-    let mut y: i32 = pieces[i].y as i32;
+    let mut x: i32 = en.x as i32;
+    let mut y: i32 = en.y as i32;
     if x == dx {    
         let step = if y > dy { -1 } else { 1 };
         y+=step;
@@ -79,16 +86,7 @@ fn move_rook(i: usize, udx: u32, udy: u32, pieces: &mut [Entity; 32]) -> bool {
             x += step;
         }
     }
-    true
-}
-
-fn contains_piece_at(x: i32, y: i32, pieces: &[Entity; 32]) -> bool {
-    for i in 0..pieces.len() {
-        if pieces[i].x as i32 == x && pieces[i].y as i32 == y {
-            return true;
-        }
-    }
-    false
+    en.x==udx||en.y==udy
 }
 
 fn move_bishop(i: usize, udx: u32,  udy: u32, pieces: &mut [Entity; 32]) -> bool {
