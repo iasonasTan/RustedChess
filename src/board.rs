@@ -1,4 +1,4 @@
-use utils::Entity;
+use crate::utils::Entity;
 
 pub const WIDTH: u32 = 8;
 pub const HEIGHT: u32 = 8;

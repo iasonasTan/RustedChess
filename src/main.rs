@@ -6,9 +6,9 @@ mod utils;
 mod board;
 mod pieces;
 
-use utils::Entity;
-use pieces::*;
-use board::draw;
+use crate::utils::Entity;
+use crate::pieces::*;
+use crate::board::draw;
 
 use std::io;
 use std::process::exit;

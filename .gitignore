@@ -1,3 +1,6 @@
-./out/*
+out
 .trash
 .gitignore
+
+# Added by cargo
+/target
