@@ -1,4 +1,5 @@
 use crate::utils::Entity;
+use crate::promotion;
 
 // ['♔', '♕', '♖', '♗', '♘', '♙']
 // ['♚', '♛', '♜', '♝', '♞', '♟']
@@ -15,7 +16,7 @@ fn contains_piece_at(x: i32, y: i32, pieces: &[Entity; 32]) -> bool {
     false
 }
 
-fn is_white_piece(en: &Entity) -> bool {
+pub fn is_white_piece(en: &Entity) -> bool {
     ['♔', '♕', '♖', '♗', '♘', '♙'].contains(&en.c)
 }
 
@@ -36,6 +37,9 @@ fn move_kill(i: usize, dx: u32, dy: u32, pieces: &mut [Entity; 32]) -> bool {
     if mv {
         pieces[i].x = dx;
         pieces[i].y = dy;
+        if pieces[i].c == '♙' || pieces[i].c == '♟' {
+            promotion::check_promotion(&mut pieces[i]);
+        }
     }
     mv
 }

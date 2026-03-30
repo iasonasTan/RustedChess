@@ -1,6 +1,7 @@
-out
 .trash
 .gitignore
 
 # Added by cargo
 /target
+
+out/main

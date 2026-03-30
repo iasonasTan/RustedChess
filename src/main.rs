@@ -5,6 +5,7 @@
 mod utils;
 mod board;
 mod pieces;
+mod promotion;
 
 use crate::utils::Entity;
 use crate::pieces::*;
@@ -15,11 +16,12 @@ use std::process::exit;
 
 fn main() {
     println!("Type 'quit' to stop application.");
-    println!("Type 'original cords,destination cords' to play.");
+    println!("Type '[original cords],[destination cords]' to play.");
     println!("Cords are typed this way: x,y");
     println!("X is the distance from the left side and Y is the distance from the top");
     let mut piec: [Entity; 32] = pieces::default();
     let mut white_plays: bool = true;
+
     loop {
         draw(&mut piec, white_plays);
 
