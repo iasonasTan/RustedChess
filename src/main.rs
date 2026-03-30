@@ -42,6 +42,10 @@ fn main() {
 
 fn play(code: &String, pieces: &mut [Entity; 32]) -> bool{
     let poss: Vec<&str> = code.split(',').collect();
+    if poss.len() != 4 {
+        println!("Unknown coordinates...");
+        return false;
+    }
     let ox: i32 = to_i32(poss[0]);
     let oy: i32 = to_i32(poss[1]);
     let dx: i32 = to_i32(poss[2]);
